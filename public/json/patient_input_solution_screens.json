@@ -1,0 +1,185 @@
+{
+  "screens": [
+    {
+      "title": "Fever & Infection Symptoms",
+      "question": "Do you currently have any of these common fever symptoms?",
+      "image": "assets/images/fever_mild_moderate_severe.png",
+      "rows": [
+        { "columns": [{ "id": "f1", "text": "Headache" }] },
+        { "columns": [{ "id": "f2", "text": "Muscle Pain / Body Ache" }] },
+        { "columns": [{ "id": "f3", "text": "Weakness / Fatigue" }] }
+      ]
+    },
+    {
+      "title": "Respiratory Symptoms",
+      "question": "Are you experiencing any respiratory issues?",
+      "image": "assets/images/cold_girl_shivering.png",
+      "rows": [
+        { "columns": [{ "id": "r1", "text": "Runny Nose" }, { "id": "r2", "text": "Sore Throat" }] },
+        { "columns": [{ "id": "r3", "text": "Cough" }, { "id": "r4", "text": "Difficulty Breathing" }] }
+      ]
+    },
+    {
+      "title": "Digestive Symptoms",
+      "question": "Are you having any digestive or stomach issues?",
+      "image": "assets/images/nausea_vomiting_woman.png",
+      "rows": [
+        { "columns": [{ "id": "d1", "text": "Nausea" }, { "id": "d2", "text": "Vomiting" }] },
+        { "columns": [{ "id": "d3", "text": "Abdominal Pain / Cramps" }] }
+      ]
+    },
+    {
+      "title": "Food & Lifestyle Exposure",
+      "question": "Please answer about your recent eating habits and activities.",
+      "image": "assets/images/junkfood_street_food_girl.png",
+      "rows": [
+        { "columns": [{ "id": "l1", "text": "Ate outside food recently (restaurant / street food / takeaway)" }] },
+        { "columns": [{ "id": "l2", "text": "Consumed cold foods or drinks (ice cream, cold drinks)" }] },
+        { "columns": [{ "id": "l3", "text": "Intense workout or heavy physical exertion recently" }] },
+        { "columns": [{ "id": "l4", "text": "Travelled to a new place or different climate" }] }
+      ]
+    },
+    {
+      "title": "PCOS / Hormonal Symptoms",
+      "question": "Do you experience any of these menstrual or hormonal symptoms?",
+      "image": "assets/images/pcod_period_calendar_pain.png",
+      "rows": [
+        { "columns": [{ "id": "p1", "text": "Irregular periods (cycle longer than 35 days or unpredictable)" }] },
+        { "columns": [{ "id": "p2", "text": "Mood swings, anxiety, or fatigue around periods" }] },
+        { "columns": [{ "id": "p3", "text": "Excess facial or body hair (chin, upper lip, chest, abdomen)" }] }
+      ]
+    },
+    {
+      "title": "PCOS — Skin & Weight Symptoms",
+      "question": "Have you noticed any of the following skin or body changes?",
+      "image": "assets/images/pcod_armpit_hair_symptom.png",
+      "rows": [
+        { "columns": [{ "id": "s1", "text": "Hair loss or thinning" }, { "id": "s2", "text": "Acne / pimples" }] },
+        { "columns": [{ "id": "s3", "text": "Weight gain easily (especially around abdomen)" }] },
+        { "columns": [{ "id": "s4", "text": "Dark skin patches on neck, underarms, or groin" }] }
+      ]
+    },
+    {
+      "title": "Obesity & Diet Analysis",
+      "question": "How would you describe your regular diet? (Select all that apply)",
+      "image": "assets/images/diet_breakfast_lunch_snack_dinner.png",
+      "rows": [
+        { "columns": [{ "id": "o1", "text": "I frequently eat fried foods" }] },
+        { "columns": [{ "id": "o2", "text": "I frequently consume sugary foods or sweets" }] },
+        { "columns": [{ "id": "o3", "text": "I consume non-vegetarian food (meat, fish, eggs)" }] },
+        { "columns": [{ "id": "o4", "text": "I skip meals or eat irregularly" }] }
+      ]
+    },
+    {
+      "title": "Physical Activity Level",
+      "question": "What best describes your activity and lifestyle?",
+      "image": "assets/images/exercise_gym_running.png",
+      "rows": [
+        { "columns": [{ "id": "a1", "text": "Sedentary lifestyle (mostly sitting / low activity)" }] },
+        { "columns": [{ "id": "a2", "text": "Light exercise 1–2 times per week" }] },
+        { "columns": [{ "id": "a3", "text": "Moderate exercise 3–4 times per week" }] },
+        { "columns": [{ "id": "a4", "text": "High intensity workouts 5+ times per week" }] }
+      ]
+    }
+  ],
+  "solutions": [
+    {
+      "title": "Your Personalised Health Recommendations",
+      "sections": [
+        {
+          "title": "Immediate Symptom Relief",
+          "items": [
+            {
+              "title": "For Fever & Infection",
+              "description": [
+                "Rest adequately and stay hydrated — drink at least 8–10 glasses of water daily",
+                "Use a cool, damp cloth on your forehead to reduce fever discomfort",
+                "Avoid cold foods and drinks until symptoms fully resolve",
+                "Monitor temperature regularly and consult a doctor if fever exceeds 103°F"
+              ]
+            },
+            {
+              "title": "For Cold & Respiratory Issues",
+              "description": [
+                "Steam inhalation with eucalyptus oil helps clear nasal congestion",
+                "Gargle with warm saltwater twice daily for sore throat",
+                "Avoid exposure to cold drafts and keep warm",
+                "Honey and ginger tea provides natural relief for cough and throat pain"
+              ]
+            },
+            {
+              "title": "For Nausea & Digestive Issues",
+              "description": [
+                "Eat light, easily digestible foods like khichdi, boiled rice, or plain toast",
+                "Avoid oily, spicy, and heavy foods until digestive symptoms subside",
+                "Sip on ORS (Oral Rehydration Solution) to prevent dehydration",
+                "Ginger tea or warm lemon water can ease nausea effectively"
+              ]
+            }
+          ]
+        },
+        {
+          "title": "PCOS / Hormonal Health",
+          "items": [
+            {
+              "title": "Diet Adjustments for PCOS",
+              "description": [
+                "Reduce refined carbohydrates: white rice, white bread, maida-based foods",
+                "Include more fibre-rich foods: vegetables, legumes, whole grains",
+                "Anti-inflammatory foods such as turmeric, green leafy vegetables, and berries help",
+                "Avoid sugary drinks and packaged juices — choose fresh fruit instead"
+              ]
+            },
+            {
+              "title": "Exercise & Lifestyle for PCOS",
+              "description": [
+                "30 minutes of moderate exercise daily (brisk walking, yoga, cycling) helps regulate hormones",
+                "Yoga poses like Supta Baddha Konasana and Bhujangasana support hormonal balance",
+                "Maintain a consistent sleep schedule — aim for 7–8 hours per night",
+                "Reduce stress through meditation, breathing exercises, or journaling"
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Weight Management",
+          "items": [
+            {
+              "title": "Healthy Eating Habits",
+              "description": [
+                "Replace fried snacks with roasted nuts, seeds, fruits, or yoghurt",
+                "Eat smaller meals 4–5 times a day rather than 2–3 large meals",
+                "Use healthier cooking methods: steaming, baking, grilling instead of frying",
+                "Reduce sugar: limit sweets, mithai, biscuits and packaged snacks"
+              ]
+            },
+            {
+              "title": "Weight Loss Lifestyle Tips",
+              "description": [
+                "Drink a large glass of water before each meal to reduce overeating",
+                "Avoid eating 2 hours before sleeping for better digestion and metabolism",
+                "Track your meals using a simple food diary or app to build awareness",
+                "Set realistic goals: 0.5–1 kg per week is healthy, sustainable weight loss"
+              ]
+            }
+          ]
+        },
+        {
+          "title": "When to See a Doctor",
+          "items": [
+            {
+              "title": "Consult a Doctor If You Have",
+              "description": [
+                "Fever above 103°F lasting more than 3 days without improvement",
+                "Difficulty breathing, chest pain, or persistent severe cough",
+                "Periods absent for more than 3 consecutive months",
+                "Unusual or rapid weight gain without dietary changes",
+                "Severe abdominal pain, blood in urine or stool, or persistent vomiting"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
