@@ -11,319 +11,231 @@ const ICON_MAP = {
 }
 
 const PALETTES = [
-  { from: '#E8F5E9', to: '#C8E6C9', iconColor: '#2E7D32', accent: '#43A047', textColor: '#1B5E20', ring: '#81C784' },
-  { from: '#E3F2FD', to: '#BBDEFB', iconColor: '#1565C0', accent: '#1976D2', textColor: '#0D47A1', ring: '#64B5F6' },
-  { from: '#FCE4EC', to: '#F8BBD0', iconColor: '#AD1457', accent: '#C2185B', textColor: '#880E4F', ring: '#F06292' },
-  { from: '#FFF3E0', to: '#FFE0B2', iconColor: '#E65100', accent: '#F57C00', textColor: '#BF360C', ring: '#FFB74D' },
-  { from: '#F3E5F5', to: '#E1BEE7', iconColor: '#6A1B9A', accent: '#7B1FA2', textColor: '#4A148C', ring: '#BA68C8' },
-  { from: '#E0F7FA', to: '#B2EBF2', iconColor: '#00695C', accent: '#00796B', textColor: '#004D40', ring: '#4DB6AC' },
-  { from: '#FFF8E1', to: '#FFECB3', iconColor: '#F57F17', accent: '#F9A825', textColor: '#E65100', ring: '#FFD54F' },
-  { from: '#EDE7F6', to: '#D1C4E9', iconColor: '#4527A0', accent: '#512DA8', textColor: '#311B92', ring: '#9575CD' },
+  { from:'#E8F5E9', to:'#C8E6C9', iconColor:'#2E7D32', accent:'#43A047', textColor:'#1B5E20', ring:'#81C784' },
+  { from:'#E3F2FD', to:'#BBDEFB', iconColor:'#1565C0', accent:'#1976D2', textColor:'#0D47A1', ring:'#64B5F6' },
+  { from:'#FCE4EC', to:'#F8BBD0', iconColor:'#AD1457', accent:'#C2185B', textColor:'#880E4F', ring:'#F06292' },
+  { from:'#FFF3E0', to:'#FFE0B2', iconColor:'#E65100', accent:'#F57C00', textColor:'#BF360C', ring:'#FFB74D' },
+  { from:'#F3E5F5', to:'#E1BEE7', iconColor:'#6A1B9A', accent:'#7B1FA2', textColor:'#4A148C', ring:'#BA68C8' },
+  { from:'#E0F7FA', to:'#B2EBF2', iconColor:'#00695C', accent:'#00796B', textColor:'#004D40', ring:'#4DB6AC' },
+  { from:'#FFF8E1', to:'#FFECB3', iconColor:'#F57F17', accent:'#F9A825', textColor:'#E65100', ring:'#FFD54F' },
+  { from:'#EDE7F6', to:'#D1C4E9', iconColor:'#4527A0', accent:'#512DA8', textColor:'#311B92', ring:'#9575CD' },
 ]
 
 export default function CategoryScreen() {
   const nav = useNavigate()
   const { healthCategories, userData, setUserData, selectDoctor } = useGlobalStore()
-  const [pressedId, setPressedId] = useState(null)
   const [activeTab, setActiveTab] = useState('home')
 
   function handleSelect(cat) {
     setUserData({
+      ...userData,
       selectedCategoryId: cat.id, selectedCategoryName: cat.name,
       selectedSubCategoryId: 0, selectedSubCategoryName: '',
     })
-    selectDoctor(cat.id)
+    selectDoctor?.(cat.id)
     if (!cat.subcategories || cat.subcategories.length === 0) nav('/patient-input')
     else nav('/sub-categories')
   }
 
   return (
-      <div style={{
-        minHeight: '100vh', display: 'flex', flexDirection: 'column',
-        background: '#EEF2FF',
-        fontFamily: "'Plus Jakarta Sans','Segoe UI',sans-serif",
-        width: '100%', boxSizing: 'border-box',
-      }}>
+      <div style={{ minHeight:'100vh', display:'flex', flexDirection:'column', background:'#F0F4FF', fontFamily:"'Plus Jakarta Sans','Segoe UI',sans-serif", width:'100%', boxSizing:'border-box' }}>
         <style>{`
         @keyframes hdrIn  { from{opacity:0;transform:translateY(-10px)} to{opacity:1;transform:translateY(0)} }
         @keyframes gridIn { from{opacity:0;transform:translateY(22px)} to{opacity:1;transform:translateY(0)} }
-        @keyframes spin   { to{transform:rotate(360deg)} }
         .cat-hdr  { animation: hdrIn  0.45s ease both; }
         .cat-grid { animation: gridIn 0.45s 0.1s ease both; opacity:0; animation-fill-mode:forwards; }
         .cat-card { transition: transform 0.18s ease, box-shadow 0.18s ease !important; }
-        .cat-card:hover { transform: translateY(-5px) scale(1.02) !important; }
-        .cat-nav-btn { transition: all 0.14s ease; background:none; border:none; cursor:pointer; }
-        .cat-nav-btn:active { transform:scale(0.88); }
+        .cat-card:hover { transform: translateY(-6px) scale(1.01) !important; box-shadow: 0 16px 40px rgba(10,22,40,0.15) !important; }
+        .cat-card:active { transform: scale(0.98) !important; }
 
-        /* ── RESPONSIVE GRID ─────────────────────────────────────── */
-        .cat-page-inner { width:100%; padding:0; }
-        .cat-cards-grid {
+        /* Full-width header */
+        .cat-hdr-wrap { background: linear-gradient(135deg,#091525 0%,#1255B8 55%,#0088A3 100%); width:100%; box-sizing:border-box; }
+        .cat-inner { max-width:1400px; margin:0 auto; width:100%; box-sizing:border-box; }
+        .cat-inner-pad { padding: 0 20px; }
+        @media(min-width:640px)  { .cat-inner-pad { padding: 0 40px; } }
+        @media(min-width:1024px) { .cat-inner-pad { padding: 0 64px; } }
+
+        .cat-content-pad { padding: 20px 20px 100px; }
+        @media(min-width:640px)  { .cat-content-pad { padding: 24px 40px 100px; } }
+        @media(min-width:1024px) { .cat-content-pad { padding: 28px 64px 100px; } }
+
+        /* Responsive grid — always fills width */
+        .category-grid {
           display: grid;
           grid-template-columns: repeat(2, 1fr);
-          gap: 14px;
+          gap: 16px;
         }
-        /* 3 columns on medium screens */
-        @media(min-width: 640px) {
-          .cat-cards-grid { grid-template-columns: repeat(3, 1fr); gap:16px; }
-        }
-        /* 4 columns on large screens */
-        @media(min-width: 1024px) {
-          .cat-cards-grid { grid-template-columns: repeat(4, 1fr); gap:18px; }
-        }
+        @media(min-width:640px)  { .category-grid { grid-template-columns: repeat(3, 1fr); gap: 18px; } }
+        @media(min-width:900px)  { .category-grid { grid-template-columns: repeat(4, 1fr); gap: 20px; } }
+        @media(min-width:1200px) { .category-grid { grid-template-columns: repeat(5, 1fr); gap: 22px; } }
+
+        /* Card image: taller on desktop */
+        .card-img-wrap { position:relative; overflow:hidden; width:100%; height:160px; }
+        @media(min-width:640px)  { .card-img-wrap { height:180px; } }
+        @media(min-width:1024px) { .card-img-wrap { height:200px; } }
+        .card-img { width:100%; height:100%; object-fit:cover; display:block; transition:transform 0.4s ease; }
+        .cat-card:hover .card-img { transform: scale(1.06); }
+        .card-overlay { position:absolute; inset:0; background:linear-gradient(180deg,transparent 40%,rgba(10,22,40,0.35) 100%); }
+        .card-icon-box { position:absolute; bottom:12px; left:12px; width:36px; height:36px; borderRadius:10px; background:rgba(255,255,255,0.92); border:1.5px solid rgba(255,255,255,0.5); display:flex; align-items:center; justify-content:center; box-shadow:0 4px 12px rgba(0,0,0,0.15); backdrop-filter:blur(8px); }
+
+        /* Bottom nav */
+        .glass-nav-wrapper { position:fixed; bottom:0; left:0; right:0; z-index:50; padding:0 0 max(env(safe-area-inset-bottom,0px),8px); }
+        .glass-nav { max-width:600px; margin:0 auto; background:rgba(255,255,255,0.95); backdrop-filter:blur(20px); border-radius:24px 24px 0 0; box-shadow:0 -4px 32px rgba(10,22,40,0.12); display:flex; padding:8px 0 4px; border-top:1px solid rgba(255,255,255,0.6); }
+        @media(min-width:900px) { .glass-nav { border-radius:24px; margin:8px auto; max-width:480px; } }
+        .nav-btn { flex:1; display:flex; flex-direction:column; align-items:center; gap:4; padding:8px 0 4px; background:none; border:none; cursor:pointer; position:relative; }
+        .nav-indicator { position:absolute; top:0; width:24px; height:3px; border-radius:0 0 3px 3px; transition:background 0.2s; }
+
+        /* Search bar */
+        .search-bar { display:flex; align-items:center; gap:12; background:rgba(255,255,255,0.12); border-radius:16px; padding:13px 18px; border:1px solid rgba(255,255,255,0.18); margin-bottom:20px; cursor:pointer; }
+
+        /* Stats pills */
+        .stats-row { display:flex; gap:10; flex-wrap:wrap; padding-bottom:24px; }
+        .stat-pill { display:flex; align-items:center; gap:6; background:rgba(255,255,255,0.10); borderRadius:20px; padding:6px 14px; border:1px solid rgba(255,255,255,0.1); border-radius:20px; }
       `}</style>
 
         {/* ── HEADER ── */}
-        <div className="cat-hdr" style={{
-          background: 'linear-gradient(135deg,#091525 0%,#1255B8 55%,#0088A3 100%)',
-          width: '100%', boxSizing: 'border-box',
-          padding: '20px 20px 0',
-          position: 'relative', overflow: 'hidden',
-        }}>
-          {/* Decorative orbs */}
-          <div style={{ position:'absolute',top:-70,right:-70,width:220,height:220,borderRadius:'50%',background:'rgba(255,255,255,0.04)',pointerEvents:'none' }} />
-          <div style={{ position:'absolute',bottom:-50,left:'25%',width:160,height:160,borderRadius:'50%',background:'rgba(0,188,212,0.07)',pointerEvents:'none' }} />
-          <div style={{ position:'absolute',top:30,left:-40,width:120,height:120,borderRadius:'50%',background:'rgba(255,255,255,0.03)',pointerEvents:'none' }} />
+        <header className="cat-hdr cat-hdr-wrap" style={{ position:'relative', overflow:'hidden' }}>
+          <div style={{ position:'absolute', top:-80, right:-80, width:280, height:280, borderRadius:'50%', background:'rgba(255,255,255,0.04)', pointerEvents:'none' }} />
+          <div style={{ position:'absolute', bottom:-60, left:'20%', width:200, height:200, borderRadius:'50%', background:'rgba(0,188,212,0.07)', pointerEvents:'none' }} />
 
-          <div className="cat-page-inner" style={{ position:'relative', zIndex:1, padding:'0 0 0 0' }}>
-            {/* Top row */}
-            <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:16 }}>
-              <div>
-                <p style={{ color:'rgba(255,255,255,0.55)', fontSize:13, margin:'0 0 3px', letterSpacing:0.3 }}>
-                  Hello, {userData?.name || 'there'} 👋
-                </p>
-                <h2 style={{ color:'#fff', fontSize:22, fontWeight:800, margin:0, letterSpacing:-0.5 }}>
-                  How can we help?
-                </h2>
+          <div className="cat-inner cat-inner-pad">
+            <div style={{ position:'relative', zIndex:1 }}>
+              <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', paddingTop:24, marginBottom:20 }}>
+                <div>
+                  <p style={{ color:'rgba(255,255,255,0.6)', fontSize:14, margin:'0 0 4px', letterSpacing:0.3 }}>
+                    Hello, {userData?.name || 'there'} 👋
+                  </p>
+                  <h1 style={{ color:'#fff', fontSize:30, fontWeight:800, margin:0, letterSpacing:-0.5 }}>
+                    How can we help?
+                  </h1>
+                </div>
+                <button onClick={() => nav('/profile')} style={{ width:48, height:48, borderRadius:'50%', background:'rgba(255,255,255,0.12)', border:'1.5px solid rgba(255,255,255,0.22)', display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer', transition:'all 0.2s' }}
+                        onMouseOver={e => e.currentTarget.style.background='rgba(255,255,255,0.2)'}
+                        onMouseOut={e => e.currentTarget.style.background='rgba(255,255,255,0.12)'}>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                </button>
               </div>
-              <button onClick={() => nav('/profile')} style={{
-                width:44, height:44, borderRadius:12,
-                background:'rgba(255,255,255,0.12)', border:'1.5px solid rgba(255,255,255,0.2)',
-                display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer',
-              }}>
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                  <circle cx="12" cy="7" r="4" />
-                </svg>
-              </button>
-            </div>
 
-            {/* Search bar */}
-            <div style={{
-              background:'rgba(255,255,255,0.10)', borderRadius:14,
-              padding:'11px 16px', display:'flex', alignItems:'center', gap:10,
-              border:'1px solid rgba(255,255,255,0.14)', marginBottom:16,
-            }}>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.45)" strokeWidth="2.2" strokeLinecap="round">
-                <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
-              </svg>
-              <span style={{ color:'rgba(255,255,255,0.38)', fontSize:14 }}>Search health concerns...</span>
-            </div>
+              <div className="search-bar">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.5)" strokeWidth="2.5" strokeLinecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <span style={{ color:'rgba(255,255,255,0.45)', fontSize:15 }}>Search health concerns...</span>
+              </div>
 
-            {/* Stats pills */}
-            <div style={{ display:'flex', gap:10, flexWrap:'wrap', paddingBottom:20 }}>
-              {[
-                { label:`${healthCategories?.length||0} Categories` },
-                { label:'Verified Doctors' },
-                { label:'Instant Help' },
-              ].map(item => (
-                  <div key={item.label} style={{
-                    display:'flex', alignItems:'center', gap:6,
-                    background:'rgba(255,255,255,0.10)', borderRadius:20,
-                    padding:'5px 12px', border:'1px solid rgba(255,255,255,0.1)',
-                  }}>
-                    <div style={{ width:6, height:6, borderRadius:'50%', background:'#4FC3F7' }} />
-                    <span style={{ fontSize:11, color:'rgba(255,255,255,0.65)', fontWeight:600 }}>{item.label}</span>
-                  </div>
-              ))}
+              <div className="stats-row">
+                {[
+                  `${healthCategories?.length || 0} Categories`,
+                  'Verified Doctors',
+                  'Instant Help',
+                ].map(lbl => (
+                    <div key={lbl} className="stat-pill">
+                      <div style={{ width:8, height:8, borderRadius:'50%', background:'#38BDF8', boxShadow:'0 0 8px rgba(56,189,248,0.5)' }} />
+                      <span style={{ fontSize:12, color:'rgba(255,255,255,0.75)', fontWeight:600 }}>{lbl}</span>
+                    </div>
+                ))}
+              </div>
             </div>
           </div>
+          {/* Wave bottom */}
+          <div style={{ height:24, background:'#F0F4FF', borderRadius:'20px 20px 0 0' }} />
+        </header>
 
-          {/* Wave */}
-          <div style={{ height:22, background:'#EEF2FF', borderRadius:'18px 18px 0 0' }} />
-        </div>
+        {/* ── MAIN CONTENT ── */}
+        <main style={{ flex:1, overflowY:'auto' }}>
+          <div className="cat-inner">
+            <div className="cat-content-pad cat-inner cat-grid" style={{ boxSizing:'border-box' }}>
+              {/* Section heading */}
+              <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:20, gridColumn:'1 / -1' }}>
+                <div style={{ display:'flex', alignItems:'center', gap:12 }}>
+                  <div style={{ width:5, height:26, borderRadius:3, background:'#3B82F6' }} />
+                  <h2 style={{ fontSize:20, fontWeight:800, color:'#0F172A', margin:0 }}>All Categories</h2>
+                </div>
+                <span style={{ fontSize:13, color:'#1D4ED8', background:'#DBEAFE', padding:'6px 16px', borderRadius:20, fontWeight:700 }}>
+                {healthCategories?.length || 0} available
+              </span>
+              </div>
 
-        {/* ── SECTION LABEL ── */}
-        <div style={{ padding:'14px 20px 10px', width:'100%', boxSizing:'border-box' }}>
-          <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between' }}>
-            <div style={{ display:'flex', alignItems:'center', gap:10 }}>
-              <div style={{ width:4, height:22, borderRadius:2, background:'linear-gradient(180deg,#1976D2,#0097A7)' }} />
-              <span style={{ fontSize:16, fontWeight:800, color:'#0A1628' }}>All Categories</span>
+              {/* Category grid */}
+              <div className="category-grid" style={{ gridColumn:'1 / -1' }}>
+                {(healthCategories || []).map((cat, idx) => (
+                    <CategoryCard
+                        key={cat.id}
+                        cat={cat}
+                        palette={PALETTES[idx % PALETTES.length]}
+                        onSelect={() => handleSelect(cat)}
+                    />
+                ))}
+              </div>
             </div>
-            <span style={{
-              fontSize:12, color:'#1976D2', background:'#DBEAFE',
-              padding:'4px 12px', borderRadius:20, fontWeight:700,
-            }}>
-            {healthCategories?.length||0} available
-          </span>
           </div>
-        </div>
-
-        {/* ── GRID ── */}
-        <div className="cat-grid" style={{ flex:1, overflowY:'auto', padding:'4px 20px 24px', width:'100%', boxSizing:'border-box' }}>
-          <div className="cat-cards-grid">
-            {(healthCategories||[]).map((cat, idx) => (
-                <CategoryCard
-                    key={cat.id}
-                    cat={cat}
-                    palette={PALETTES[idx % PALETTES.length]}
-                    pressed={pressedId === cat.id}
-                    onPress={() => setPressedId(cat.id)}
-                    onRelease={() => { setPressedId(null); handleSelect(cat) }}
-                />
-            ))}
-          </div>
-        </div>
+        </main>
 
         {/* ── BOTTOM NAV ── */}
-        <div style={{
-          width:'100%', background:'#fff',
-          borderTop:'1px solid #E3E8F5',
-          display:'flex', justifyContent:'space-around',
-          boxShadow:'0 -4px 24px rgba(10,22,40,0.09)',
-          flexShrink:0, boxSizing:'border-box',
-          padding:'6px 0 max(env(safe-area-inset-bottom,0px), 10px)',
-        }}>
-          {[
-            { icon:(
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
-                  </svg>
-              ), label:'Home', id:'home' },
-            { icon:(
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
-                  </svg>
-              ), label:'History', id:'history' },
-            { icon:(
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>
-                  </svg>
-              ), label:'Alerts', id:'alerts' },
-            { icon:(
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
-                  </svg>
-              ), label:'Profile', id:'profile' },
-          ].map(item => {
-            const active = activeTab === item.id
-            return (
-                <button key={item.id} className="cat-nav-btn"
-                        onClick={() => { setActiveTab(item.id); if (item.id === 'profile') nav('/profile') }}
-                        style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:2, padding:'6px 20px', position:'relative' }}
-                >
-                  {active && (
-                      <div style={{
-                        position:'absolute', top:0, left:'50%', transform:'translateX(-50%)',
-                        width:28, height:3, borderRadius:'0 0 4px 4px',
-                        background:'linear-gradient(90deg,#1976D2,#0097A7)',
-                      }} />
-                  )}
-                  <span style={{ color: active ? '#1976D2' : '#9CA3AF', display:'flex', stroke: active ? '#1976D2' : '#9CA3AF' }}>
-                {item.icon}
-              </span>
-                  <span style={{ fontSize:10, fontWeight: active ? 700 : 500, color: active ? '#1976D2' : '#9CA3AF' }}>
-                {item.label}
-              </span>
-                </button>
-            )
-          })}
+        <div className="glass-nav-wrapper">
+          <nav className="glass-nav">
+            {[
+              { label:'Home',    id:'home',    path: <><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></> },
+              { label:'History', id:'history', path: <><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></> },
+              { label:'Alerts',  id:'alerts',  path: <><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></> },
+              { label:'Profile', id:'profile', path: <><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></> },
+            ].map(item => {
+              const isActive = activeTab === item.id
+              return (
+                  <button key={item.id} className="nav-btn" onClick={() => { setActiveTab(item.id); if (item.id === 'profile') nav('/profile') }}>
+                    <div className="nav-indicator" style={{ background: isActive ? '#3B82F6' : 'transparent' }} />
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={isActive ? '#3B82F6' : '#64748B'} strokeWidth={isActive ? '2.5' : '2'} strokeLinecap="round" strokeLinejoin="round">{item.path}</svg>
+                    <span style={{ fontSize:11, fontWeight: isActive ? 700 : 600, color: isActive ? '#3B82F6' : '#64748B', marginTop:2 }}>{item.label}</span>
+                  </button>
+              )
+            })}
+          </nav>
         </div>
       </div>
   )
 }
 
-function CategoryCard({ cat, palette: p, pressed, onPress, onRelease }) {
+function CategoryCard({ cat, palette: p, onSelect }) {
   const [imgErr, setImgErr] = useState(false)
   const icon   = ICON_MAP[cat.icon] || 'medical_services'
   const imgSrc = img(cat.image)
 
   return (
-      <button
-          className="cat-card"
-          onMouseDown={onPress} onMouseUp={onRelease}
-          onTouchStart={onPress} onTouchEnd={onRelease}
-          style={{
-            background: '#fff',
-            borderRadius: 18,
-            border: `1.5px solid ${p.ring}55`,
-            padding: 0, overflow: 'hidden', cursor: 'pointer', textAlign: 'left',
-            transform: pressed ? 'scale(0.95)' : 'scale(1)',
-            boxShadow: pressed
-                ? `0 2px 10px ${p.accent}30`
-                : `0 6px 22px rgba(10,22,40,0.10)`,
-            display: 'flex', flexDirection: 'column',
-            width: '100%',
-          }}
-      >
-        {/* Image area */}
-        <div style={{
-          width: '100%', height: 130, position: 'relative',
-          overflow: 'hidden', flexShrink: 0,
-          background: `linear-gradient(145deg,${p.from},${p.to})`,
-        }}>
-          {(imgSrc && !imgErr)
-              ? <img
-                  src={imgSrc} alt={cat.name}
-                  style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-                  onError={() => setImgErr(true)}
-              />
-              : <div style={{ width:'100%', height:'100%', display:'flex', alignItems:'center', justifyContent:'center' }}>
-                <span className="material-icons" style={{ fontSize:54, color:p.iconColor, opacity:0.4 }}>{icon}</span>
+      <button className="cat-card" onClick={onSelect} style={{ background:'#fff', borderRadius:20, border:'1.5px solid rgba(10,22,40,0.06)', padding:0, overflow:'hidden', cursor:'pointer', textAlign:'left', display:'flex', flexDirection:'column', boxShadow:'0 4px 18px rgba(10,22,40,0.07)', width:'100%' }}>
+
+        {/* Image section */}
+        <div className="card-img-wrap" style={{ background:`linear-gradient(145deg,${p.from},${p.to})` }}>
+          {(imgSrc && !imgErr) ? (
+              <>
+                <img src={imgSrc} alt={cat.name} className="card-img" onError={() => setImgErr(true)} />
+                <div className="card-overlay" />
+              </>
+          ) : (
+              <div style={{ width:'100%', height:'100%', display:'flex', alignItems:'center', justifyContent:'center' }}>
+                <span className="material-icons" style={{ fontSize:72, color:p.iconColor, opacity:0.25 }}>{icon}</span>
               </div>
-          }
+          )}
 
-          {/* Bottom fade overlay */}
-          <div style={{
-            position: 'absolute', inset: 0,
-            background: `linear-gradient(180deg,transparent 45%,rgba(255,255,255,0.88) 100%)`,
-          }} />
-
-          {/* Icon badge on image */}
-          <div style={{
-            position: 'absolute', bottom: 10, left: 10, zIndex: 2,
-            width: 36, height: 36, borderRadius: 10,
-            background: 'rgba(255,255,255,0.96)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            boxShadow: `0 3px 10px ${p.accent}44`,
-          }}>
-            <span className="material-icons" style={{ fontSize: 20, color: p.iconColor }}>{icon}</span>
+          {/* Icon box */}
+          <div className="card-icon-box">
+            <span className="material-icons" style={{ fontSize:20, color:p.iconColor }}>{icon}</span>
           </div>
 
-          {/* Subcategory count badge */}
+          {/* Badge */}
           {cat.subcategories?.length > 0 && (
-              <div style={{
-                position: 'absolute', top: 9, right: 9, zIndex: 2,
-                background: p.accent, color: '#fff',
-                fontSize: 9, fontWeight: 800, padding: '2px 8px', borderRadius: 20,
-                boxShadow: `0 2px 8px ${p.accent}66`, letterSpacing: 0.4,
-              }}>
+              <div style={{ position:'absolute', top:12, right:12, background:p.accent, color:'#fff', fontSize:10, fontWeight:800, padding:'4px 10px', borderRadius:20, boxShadow:`0 4px 12px ${p.accent}66`, letterSpacing:'0.05em' }}>
                 {cat.subcategories.length} TYPES
               </div>
           )}
         </div>
 
         {/* Text section */}
-        <div style={{ padding: '10px 12px 12px' }}>
-          <p style={{ fontSize: 13, fontWeight: 800, color: '#0A1628', margin: '0 0 3px', lineHeight: 1.3 }}>
-            {cat.name}
-          </p>
+        <div style={{ padding:'16px', display:'flex', flexDirection:'column', flex:1 }}>
+          <h3 style={{ fontSize:15, fontWeight:700, color:'#0F172A', margin:'0 0 6px', lineHeight:1.3 }}>{cat.name}</h3>
           {cat.description && (
-              <p style={{
-                fontSize: 11, color: '#6B7280', margin: '0 0 7px', lineHeight: 1.4,
-                display: '-webkit-box', WebkitLineClamp: 1, WebkitBoxOrient: 'vertical', overflow: 'hidden',
-              }}>
-                {cat.description}
-              </p>
+              <p style={{ fontSize:13, color:'#64748B', margin:'0 0 12px', lineHeight:1.5, display:'-webkit-box', WebkitLineClamp:2, WebkitBoxOrient:'vertical', overflow:'hidden', flex:1 }}>{cat.description}</p>
           )}
-          <div style={{
-            display: 'inline-flex', alignItems: 'center', gap: 4,
-            background: p.from, padding: '3px 9px', borderRadius: 7,
-            border: `1px solid ${p.ring}55`,
-          }}>
-            <span style={{ fontSize: 10, fontWeight: 800, color: p.accent, letterSpacing: 0.5 }}>EXPLORE</span>
-            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke={p.accent} strokeWidth="2.5" strokeLinecap="round">
-              <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
-            </svg>
+          <div style={{ marginTop:'auto', display:'inline-flex', alignItems:'center', gap:6, alignSelf:'flex-start' }}>
+            <span style={{ fontSize:12, fontWeight:700, color:p.accent, letterSpacing:'0.02em' }}>EXPLORE</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={p.accent} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
           </div>
         </div>
       </button>

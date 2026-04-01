@@ -10,18 +10,20 @@ import AppointmentScreen  from './screens/AppointmentScreen'
 
 export default function App() {
   return (
-    <div className="app-shell">
-      <Routes>
-        <Route path="/"               element={<SplashScreen />}       />
-        <Route path="/login"          element={<LoginScreen />}        />
-        <Route path="/profile"        element={<ProfileScreen />}      />
-        <Route path="/categories"     element={<CategoryScreen />}     />
-        <Route path="/sub-categories" element={<SubCategoryScreen />}  />
-        <Route path="/patient-input"  element={<PatientInputScreen />} />
-        <Route path="/solution"       element={<SolutionScreen />}     />
-        <Route path="/appointment"    element={<AppointmentScreen />}  />
-        <Route path="*"               element={<Navigate to="/" replace />} />
-      </Routes>
-    </div>
+      <div className="app-shell">
+        <Routes>
+          <Route path="/"               element={<SplashScreen />}       />
+          <Route path="/login"          element={<LoginScreen />}        />
+          <Route path="/profile"        element={<ProfileScreen />}      />
+          <Route path="/categories"     element={<CategoryScreen />}     />
+          <Route path="/sub-categories" element={<SubCategoryScreen />}  />
+          <Route path="/patient-input"  element={<PatientInputScreen />} />
+          <Route path="/solution"       element={<SolutionScreen />}     />
+          <Route path="/appointment"    element={<AppointmentScreen />}  />
+          {/* Payment route preserved for future but not linked in UI */}
+          {/* <Route path="/payment" element={<PaymentScreen />} /> */}
+          <Route path="*"               element={<Navigate to="/" replace />} />
+        </Routes>
+      </div>
   )
 }

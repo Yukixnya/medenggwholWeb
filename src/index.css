@@ -1,3 +1,62 @@
+/*@tailwind base;*/
+/*@tailwind components;*/
+/*@tailwind utilities;*/
+
+/*@layer base {*/
+/*  *, *::before, *::after {*/
+/*    box-sizing: border-box;*/
+/*    -webkit-tap-highlight-color: transparent;*/
+/*  }*/
+
+/*  html, body, #root {*/
+/*    height: 100%;*/
+/*    margin: 0;*/
+/*    padding: 0;*/
+/*    font-family: 'Nunito', sans-serif;*/
+/*    background: #F5F7FA;*/
+/*    -webkit-font-smoothing: antialiased;*/
+/*  }*/
+
+/*  #root {*/
+/*    display: flex;*/
+/*    flex-direction: column;*/
+/*    min-height: 100vh;*/
+/*  }*/
+/*}*/
+
+/*@layer components {*/
+/*  !* Full width web layout — no phone shell *!*/
+/*  .app-shell {*/
+/*    width: 100%;*/
+/*    min-height: 100vh;*/
+/*    background: #F5F7FA;*/
+/*    display: flex;*/
+/*    flex-direction: column;*/
+/*  }*/
+
+/*  !* Centered content container for forms/cards *!*/
+/*  .page-center {*/
+/*    width: 100%;*/
+/*    max-width: 520px;*/
+/*    margin: 0 auto;*/
+/*    padding: 0 16px;*/
+/*  }*/
+
+/*  !* Full bleed gradient used on splash/login/profile *!*/
+/*  .gradient-blue   { background: linear-gradient(135deg, #2979FF 0%, #00BCD4 100%); }*/
+/*  .gradient-blue-v { background: linear-gradient(180deg, #2979FF 0%, #00BCD4 100%); }*/
+
+/*  !* Hide scrollbar *!*/
+/*  .no-scrollbar::-webkit-scrollbar { display: none; }*/
+/*  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }*/
+/*}*/
+
+
+
+
+
+
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -12,9 +71,10 @@
     height: 100%;
     margin: 0;
     padding: 0;
-    font-family: 'Nunito', sans-serif;
-    background: #F5F7FA;
+    font-family: 'Plus Jakarta Sans', 'Nunito', 'Segoe UI', sans-serif;
+    background: #F0F4FF;
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   #root {
@@ -22,31 +82,45 @@
     flex-direction: column;
     min-height: 100vh;
   }
+
+  /* Remove all default button styles */
+  button {
+    font-family: inherit;
+  }
 }
 
 @layer components {
-  /* Full width web layout — no phone shell */
+  /* Full-width web layout — fills 100% of screen width, no phone shell */
   .app-shell {
     width: 100%;
     min-height: 100vh;
-    background: #F5F7FA;
+    background: #F0F4FF;
     display: flex;
     flex-direction: column;
   }
 
-  /* Centered content container for forms/cards */
+  /* Centered max-width container for narrow content like forms */
   .page-center {
     width: 100%;
-    max-width: 520px;
+    max-width: 600px;
     margin: 0 auto;
-    padding: 0 16px;
+    padding: 0 20px;
   }
 
-  /* Full bleed gradient used on splash/login/profile */
-  .gradient-blue   { background: linear-gradient(135deg, #2979FF 0%, #00BCD4 100%); }
-  .gradient-blue-v { background: linear-gradient(180deg, #2979FF 0%, #00BCD4 100%); }
+  /* Wide container — used for dashboard grids, category screens */
+  .page-wide {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+  @media (min-width: 640px)  { .page-wide { padding: 0 40px; } }
+  @media (min-width: 1024px) { .page-wide { padding: 0 64px; } }
 
-  /* Hide scrollbar */
+  .gradient-blue   { background: linear-gradient(135deg, #2979FF 0%, #00BCD4 100%); }
+  .gradient-dark   { background: linear-gradient(160deg, #0A1628 0%, #0D2137 45%, #0A3D4A 100%); }
+
+  /* Scrollbar hiding */
   .no-scrollbar::-webkit-scrollbar { display: none; }
   .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 }
