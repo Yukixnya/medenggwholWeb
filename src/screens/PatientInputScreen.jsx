@@ -18,10 +18,11 @@ const SCREEN_MAP = {
     {
       title: 'Select Symptoms',
       question: 'Select the Physical Symptoms',
+      baseImg: "/images/healthy_woman_fullbody.png",
       type: 'bodymap',
       options: [
-        { id: 'f_body_head', text: 'Headache', px: 48, py: 9, ly: 27 },
-        { id: 'f_body_weak', text: 'Weakness', px: 48, py: 25, ly: 45 },
+        { id: 'f_body_head', text: 'Headache', px: 48, py: 5, ly: 27 },
+        { id: 'f_body_weak', text: 'Weakness', px: 48, py: 22, ly: 45 },
         { id: 'f_body_muscle', text: 'Muscle pain', px: 52, py: 56, ly: 75 },
       ],
     },
