@@ -17,90 +17,122 @@ function buildSolution(userData) {
         }
     }
 
-    // FEVER
-    if (catId === 1 || hasAny('f_symp_1', 'f_symp_2', 'f_symp_3', 'f_symp_4', 'f_symp_5', 'f_symp_6', 'f_symp_7', 'f_symp_8')) {
-        let isEmergency = ids.has('f_symp_6'); // Difficulty breathing
-        
+    // FEVER & INFECTIONS
+    if (catId === 1 || hasAny('f_symp_1', 'f_symp_2', 'f_symp_3', 'f_body_head', 'f_body_weak', 'f_body_nose', 'f_body_throat', 'f_body_cough', 'f_body_breath', 'f_body_nausea', 'f_body_vomiting')) {
+        let isEmergency = ids.has('f_body_breath'); // Difficulty breathing
+
+        let symptomsDetected = [];
+        if (ids.has('f_body_head')) symptomsDetected.push('Headache');
+        if (ids.has('f_body_weak')) symptomsDetected.push('Weakness');
+        if (ids.has('f_body_nose')) symptomsDetected.push('Congestion');
+        if (ids.has('f_body_throat')) symptomsDetected.push('Sore Throat');
+        if (ids.has('f_body_cough')) symptomsDetected.push('Cough');
+        if (hasAny('f_body_nausea', 'f_body_vomiting', 'f_body_abdominal_pain')) symptomsDetected.push('Digestive distress');
+
         let causes = [];
-        if (ids.has('f_out_yes')) causes.push('Recent outside food');
-        if (ids.has('f_cold_yes')) causes.push('Cold food/drinks');
-        if (ids.has('f_travel_yes')) causes.push('Recent travel');
-        if (ids.has('f_stress_yes')) causes.push('Physical exhaustion');
-        
+        if (ids.has('f_food_yes')) causes.push('Outside food');
+        if (ids.has('f_icecream_yes')) causes.push('Cold intake');
+        if (ids.has('f_travel_yes')) causes.push('Climate change/Travel');
+        if (ids.has('f_exercise_yes')) causes.push('Physical overexertion');
+
         return {
             title: isEmergency ? 'Urgent Attention Required 🚨' : 'Fever & Infection Assessment',
             color: isEmergency ? '#EF4444' : '#F59E0B',
             icon: isEmergency ? 'emergency' : 'thermostat',
             sections: [
-                { 
-                    title: 'Analysis', 
-                    content: isEmergency ? 'Difficulty breathing detected. Please seek medical help immediately.' : 'Your symptoms indicate a possible viral/bacterial infection or common cold.' 
+                {
+                    title: 'Symptom Profile',
+                    content: symptomsDetected.length > 0 ? `Detected: ${symptomsDetected.join(' • ')}.` : 'General fever symptoms reported.'
                 },
-                { 
-                    title: 'Possible Triggers', 
-                    content: causes.length > 0 ? causes.join(' • ') : 'Viral transmission or seasonal changes.' 
+                {
+                    title: 'Analysis',
+                    content: isEmergency ? 'Severe respiratory distress detected. Please seek medical help immediately.' : 'Your symptoms suggest an acute infection, likely viral or related to recent lifestyle/exposure factors.'
                 },
-                { 
-                    title: 'Recommendation', 
-                    content: 'Rest adequately, stay hydrated, and monitor temperature. Avoid cold/outside foods. Take paracetamol for severe discomfort.' 
+                {
+                    title: 'Possible Triggers',
+                    content: causes.length > 0 ? causes.join(' • ') : 'Seasonal exposure or viral transmission.'
+                },
+                {
+                    title: 'Recommendation',
+                    content: 'Maintain bed rest, stay hydrated with electrolyte fluids, and monitor temperature regularly. Avoid cold/fried foods. Consult a doctor if fever exceeds 101°F.'
                 }
             ]
         }
     }
 
-    // PCOS
+    // PCOS & HORMONAL HEALTH
     if (catId === 2 || hasAny('p_irreg_yes', 'p_mood_yes', 'p_hair_yes', 'p_hl', 'p_acne', 'p_gain_yes', 'p_dark_yes')) {
-        let score = ['p_irreg_yes', 'p_mood_yes', 'p_hair_yes', 'p_hl', 'p_acne', 'p_gain_yes', 'p_dark_yes'].filter(id => ids.has(id)).length;
-        
+        let symptomsDetected = [];
+        if (ids.has('p_irreg_yes')) symptomsDetected.push('Irregular periods');
+        if (ids.has('p_mood_yes')) symptomsDetected.push('Mood swings/Fatigue');
+        if (ids.has('p_hair_yes')) symptomsDetected.push('Excess body hair');
+        if (ids.has('p_hl')) symptomsDetected.push('Hair thinning');
+        if (ids.has('p_acne')) symptomsDetected.push('Acne/Skin issues');
+        if (ids.has('p_gain_yes')) symptomsDetected.push('Weight gain');
+        if (ids.has('p_dark_yes')) symptomsDetected.push('Dark skin patches');
+
+        let score = symptomsDetected.length;
+
         return {
             title: score >= 3 ? 'High Probability of PCOS' : 'Hormonal Assessment',
             color: '#EC4899',
             icon: 'water_drop',
             sections: [
-                { 
-                    title: 'Symptom Match', 
-                    content: score >= 3 ? 'You have multiple primary indicators of PCOS including cycle irregularities and physical changes. This requires clinical investigation.' : 'You have a few symptoms that could indicate mild hormonal imbalance or stress impact.'
+                {
+                    title: 'Symptom Match',
+                    content: symptomsDetected.length > 0 ? `Identified Indicators: ${symptomsDetected.join(' • ')}.` : 'General hormonal concerns reported.'
                 },
-                { 
-                    title: 'Clinical Next Steps', 
-                    content: 'Consult an endocrinologist or gynecologist for proper diagnosis. A pelvic ultrasound and hormone blood test panel may be required.' 
+                {
+                    title: 'Clinical Analysis',
+                    content: score >= 3 ? 'You exhibit multiple primary markers of Polycystic Ovary Syndrome (PCOS). This requires clinical confirmation through blood work and imaging.' : 'You have a few indicators that may suggest mild hormonal imbalance or the early stages of a metabolic shift.'
                 },
-                { 
-                    title: 'Lifestyle Advice', 
-                    content: 'Maintain a balanced diet rich in complex carbs, incorporate daily moderate exercise like yoga, and focus on stress reduction to naturally manage hormones.' 
+                {
+                    title: 'Recommended Tests',
+                    content: 'Standard diagnostic protocol includes a Pelvic Ultrasound (for cystic ovaries) and a hormonal blood panel (LH, FSH, Testosterone, and Fasting Insulin).'
+                },
+                {
+                    title: 'Lifestyle Management',
+                    content: 'Focus on a low-glycemic diet to manage insulin resistance. Regular strength training and stress management are key to balancing hormones naturally.'
                 }
             ]
         }
     }
 
-    // THYROID & LIFESTYLE
+    // THYROID & LIFESTYLE (Category 3)
     if (catId === 3 || hasAny('t_fried_yes', 't_sugar_yes', 't_nv_yes', 't_stress_yes', 't_sit_yes', 't_d_th', 't_d_bp', 't_d_db')) {
         let diseases = [];
         if (ids.has('t_d_th')) diseases.push('Thyroid');
         if (ids.has('t_d_bp')) diseases.push('Blood Pressure');
         if (ids.has('t_d_db')) diseases.push('Diabetes');
-        
-        let habits = [];
-        if (ids.has('t_fried_yes') || ids.has('t_sugar_yes')) habits.push('High calorie/sugar diet');
-        if (ids.has('t_sit_yes')) habits.push('Sedentary lifestyle');
-        if (ids.has('t_stress_yes')) habits.push('High stress levels');
+
+        let riskFactors = [];
+        if (ids.has('t_fried_yes')) riskFactors.push('High fried food intake');
+        if (ids.has('t_sugar_yes')) riskFactors.push('Frequent sugary foods');
+        if (ids.has('t_sit_yes')) riskFactors.push('Sedentary lifestyle');
+        if (ids.has('t_stress_yes')) riskFactors.push('Elevated stress levels');
+
+        let mealsCount = ['t_m_bf', 't_m_lu', 't_m_sn', 't_m_dn'].filter(m => ids.has(m)).length;
 
         return {
             title: 'Metabolic & Lifestyle Assessment',
             color: '#3B82F6',
             icon: 'monitor_weight',
             sections: [
-                { 
-                    title: 'Profile Overview', 
-                    content: diseases.length > 0 ? `Managing existing conditions: ${diseases.join(', ')}.` : 'Assessing general metabolic health and weight factors.'
+                {
+                    title: 'Current Conditions',
+                    content: diseases.length > 0 ? `Active management required for: ${diseases.join(' • ')}.` : 'Focused on metabolic optimization and prevention.'
                 },
                 {
-                    title: 'Risk Factors Identified',
-                    content: habits.length > 0 ? habits.join(' • ') : 'Good baseline lifestyle habits.'
+                    title: 'Nutrition Analysis',
+                    content: mealsCount < 3 ? 'Irregular meal patterns detected. Consistent nutrition is key for thyroid and metabolic health.' : 'Standard meal frequency reported. Watch for high-calorie intake from fried or sugary items.'
                 },
-                { 
-                    title: 'Actionable Advice', 
-                    content: 'Reduce refined carbohydrates, sugar, and fried foods. Break sedentary periods every 30 minutes to improve metabolism and avoid weight gain.' 
+                {
+                    title: 'Identified Risk Factors',
+                    content: riskFactors.length > 0 ? riskFactors.join(' • ') : 'No high-risk lifestyle factors identified at this time.'
+                },
+                {
+                    title: 'Actionable Advice',
+                    content: 'Maintain a consistent meal schedule. Replace refined sugars with whole grains and ensure at least 30 minutes of physical activity daily to combat sedentary habits.'
                 }
             ]
         }
@@ -158,7 +190,7 @@ export default function SolutionScreen() {
                     .ss-actions button { flex: 1; }
                 }
             `}</style>
-            
+
             {/* Background decorative blobs */}
             <div style={{
                 position: 'absolute', top: -100, right: -50,
@@ -187,7 +219,7 @@ export default function SolutionScreen() {
                         {solution.icon || 'analytics'}
                     </span>
                 </div>
-                
+
                 <h1 className="ss-title" style={{
                     fontSize: 28,
                     fontWeight: 900,
@@ -206,41 +238,41 @@ export default function SolutionScreen() {
             {/* CONTENT CARDS */}
             <div className="ss-content">
                 <div className="ss-grid">
-                {solution.sections.map((sec, i) => (
-                    <div
-                        key={i}
-                        style={{
-                            background: 'rgba(255, 255, 255, 0.7)',
-                            backdropFilter: 'blur(20px)',
-                            WebkitBackdropFilter: 'blur(20px)',
-                            border: '1px solid rgba(255, 255, 255, 0.5)',
-                            borderRadius: 24,
-                            padding: '24px',
-                            boxShadow: '0 10px 40px rgba(0,0,0,0.03)',
-                            transform: 'translateZ(0)' // Hardware acceleration
-                        }}
-                    >
-                        <h3 style={{
-                            fontSize: 14,
-                            fontWeight: 800,
-                            textTransform: 'uppercase',
-                            letterSpacing: '1px',
-                            color: solution.color,
-                            margin: '0 0 10px'
-                        }}>
-                            {sec.title}
-                        </h3>
-                        <p style={{
-                            fontSize: 16,
-                            color: '#334155',
-                            lineHeight: 1.6,
-                            margin: 0,
-                            fontWeight: 600
-                        }}>
-                            {sec.content}
-                        </p>
-                    </div>
-                ))}
+                    {solution.sections.map((sec, i) => (
+                        <div
+                            key={i}
+                            style={{
+                                background: 'rgba(255, 255, 255, 0.7)',
+                                backdropFilter: 'blur(20px)',
+                                WebkitBackdropFilter: 'blur(20px)',
+                                border: '1px solid rgba(255, 255, 255, 0.5)',
+                                borderRadius: 24,
+                                padding: '24px',
+                                boxShadow: '0 10px 40px rgba(0,0,0,0.03)',
+                                transform: 'translateZ(0)' // Hardware acceleration
+                            }}
+                        >
+                            <h3 style={{
+                                fontSize: 14,
+                                fontWeight: 800,
+                                textTransform: 'uppercase',
+                                letterSpacing: '1px',
+                                color: solution.color,
+                                margin: '0 0 10px'
+                            }}>
+                                {sec.title}
+                            </h3>
+                            <p style={{
+                                fontSize: 16,
+                                color: '#334155',
+                                lineHeight: 1.6,
+                                margin: 0,
+                                fontWeight: 600
+                            }}>
+                                {sec.content}
+                            </p>
+                        </div>
+                    ))}
 
                 </div>
 

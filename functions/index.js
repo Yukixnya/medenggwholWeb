@@ -18,7 +18,7 @@ app.post('/send-otp', async (req, res) => {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', authkey: process.env.MSG91_KEY },
       body: JSON.stringify({
-        integrated_number: '919004975395',
+        integrated_number: '919638190964',
         content_type: 'template',
         payload: {
           messaging_product: 'whatsapp',
